@@ -63,6 +63,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
+# Postgres database settings
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -74,6 +75,7 @@ DATABASES = {
     }
 }
 
+# Redis cache settings
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -114,3 +116,19 @@ STATIC_URL = 'static/'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Amadeus settings
+AMADEUS_API_KEY = os.getenv("AMADEUS_API_KEY")
+AMADEUS_API_SECRET = os.getenv("AMADEUS_API_SECRET")
+AMADEUS_API_ENV = os.getenv("AMADEUS_API_ENV")  # test or live
+
+AMADEUS_LOGIN_ENDPOINT = {
+    "test": "https://test.api.amadeus.com/v1/security/oauth2/token",
+    "live": "..."
+}
+
+AMADEUS_FLIGHT_SEARCH_ENDPOINT = {
+    "test": "https://test.api.amadeus.com/v1/shopping/flight-offers",
+    "live": "..."
+}
