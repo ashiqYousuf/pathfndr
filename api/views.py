@@ -17,10 +17,10 @@ class PingAPI(APIView):
 
 
 class FlightPriceAPI(APIView):
-
     """
     This API returns the cheapest flight between the origin and destination
     """
+    renderer_classes = [JSONRenderer]
 
     @staticmethod
     def get(request):
