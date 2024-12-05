@@ -129,6 +129,6 @@ AMADEUS_LOGIN_ENDPOINT = {
 }
 
 AMADEUS_FLIGHT_SEARCH_ENDPOINT = {
-    "test": "https://test.api.amadeus.com/v1/shopping/flight-offers",
+    "test": "https://test.api.amadeus.com/v2/shopping/flight-offers",
     "live": "..."
 }

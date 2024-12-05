@@ -29,6 +29,7 @@ class Amadeus:
                 cache.set(cache_key, access_token, AMADEUS_LOGIN_EXPIRY)
                 self.access_token = access_token
             else:
+                self.access_token = None
                 print(f"Could not log in to amadeus. {
                     response.status_code} {response.content}")
 
@@ -45,27 +46,29 @@ class Amadeus:
 
     def get_cheapest_flight(self, org_code="", dest_code="", depart_date="", num_adults=1, num_results=1):
         """
-        This method returns the cheapest flight between source and destination.
+        This method returns the single cheapest flight between the source and destination.
         """
+        key = f'{AMADEUS_CACHE_PREFIX}:flight_search'
+        search_result = cache.get(key)
+        if search_result:
+            print("Flight search result cache hit")
+            return search_result
+
+        print("Flight search result cache miss")
         url = f'{
             settings.AMADEUS_FLIGHT_SEARCH_ENDPOINT[settings.AMADEUS_API_ENV]}'
         q_params = f'originLocationCode={org_code}&destinationLocationCode={
             dest_code}&departureDate={depart_date}&adults={num_adults}&max={num_results}'
         endpoint = f'{url}?{q_params}'
         data = self.send(endpoint)
-        return data
-
-# class Amadeus:
-
-    # def airport_routes(self, departure_code, arrival_country, max_results=100):
-    #     cache_key = f'{self.__class__.AIRPORT_ROUTES_CACHE_PREFIX}{
-    #         departure_code}:{arrival_country}'
-    #     data = rcache.get(cache_key)
-    #     if not data:
-    #         print(f"Cache miss: {cache_key}")
-    #         data = self.send(self.__class__.AIRPORT_ROUTES_EP + f'?departureAirportCode={departure_code}'
-    #                          f'&arrivalCountryCode={arrival_country}&max={max_results}')
-    #         rcache.set(cache_key, data)
-    #     else:
-    #         print(f"Cache hit: {cache_key}")
-    #     return data
+        if "data" in data and len(data["data"]) > 0:
+            price = data["data"][0]["price"]
+            search_result = {
+                "origin": org_code,
+                "destination": dest_code,
+                "departure_date": depart_date,
+                "price": f"{price['total']} {price['currency']}"
+            }
+            cache.set(key, search_result, AMADEUS_FLIGHT_SEARCH_EXPIRY)
+            return search_result
+        return None
