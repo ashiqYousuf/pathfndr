@@ -60,6 +60,7 @@ class Amadeus:
         q_params = f'originLocationCode={org_code}&destinationLocationCode={
             dest_code}&departureDate={depart_date}&adults={num_adults}&max={num_results}'
         endpoint = f'{url}?{q_params}'
+
         data = self.send(endpoint)
         if "data" in data and len(data["data"]) > 0:
             price = data["data"][0]["price"]
