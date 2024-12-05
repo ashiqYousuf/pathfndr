@@ -48,7 +48,7 @@ class Amadeus:
         """
         This method returns the single cheapest flight between the source and destination.
         """
-        key = f'{AMADEUS_CACHE_PREFIX}:flight_search'
+        key = f'{AMADEUS_CACHE_PREFIX}:{org_code}{dest_code}'
         search_result = cache.get(key)
         if not no_cache and search_result:
             print("Flight search result cache hit")

@@ -88,10 +88,6 @@ DATABASES = {
     }
 }
 
-print(os.getenv("REDIS_URL"))
-print(os.getenv("SECRET_KEY"))
-print(os.getenv("DJANGO_ENV"))
-print("**************************************")
 
 # Redis cache settings
 CACHES = {
