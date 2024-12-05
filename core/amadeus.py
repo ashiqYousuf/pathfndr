@@ -44,13 +44,13 @@ class Amadeus:
         print(f"Error from amadeus: {response.status_code} {response.content}")
         return None
 
-    def get_cheapest_flight(self, org_code="", dest_code="", depart_date="", num_adults=1, num_results=1):
+    def get_cheapest_flight(self, org_code="", dest_code="", depart_date="", num_adults=1, num_results=1, no_cache=0):
         """
         This method returns the single cheapest flight between the source and destination.
         """
         key = f'{AMADEUS_CACHE_PREFIX}:flight_search'
         search_result = cache.get(key)
-        if search_result:
+        if not no_cache and search_result:
             print("Flight search result cache hit")
             return search_result
 

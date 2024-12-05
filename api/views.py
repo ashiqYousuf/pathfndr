@@ -29,7 +29,8 @@ class FlightPriceAPI(APIView):
             "org_code": request.GET.get("org_code"),
             "dest_code": request.GET.get("dest_code"),
             "depart_date": request.GET.get("depart_date"),
-            "num_adults": int(request.GET.get("num_adults") or 1)
+            "num_adults": int(request.GET.get("num_adults") or 1),
+            "no_cache": int(request.GET.get("no_cache") or 0),
         }
 
         serializer = FlightSearchAPISerializer(data)
